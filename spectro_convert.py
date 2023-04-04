@@ -10,3 +10,5 @@ Pxx, freqs, bins, im = plt.specgram(data, Fs=samplerate)
 # add axis labels
 plt.ylabel('Frequency [Hz]')
 plt.xlabel('Time [sec]')
+plt.show()
+plt.savefig("spectrogram.png")
