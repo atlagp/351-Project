@@ -1,57 +1,39 @@
-#!/usr/bin/env python3
 from scipy.fftpack import fft, ifft
 import scipy.io.wavfile as wav
 import scipy.signal as sg
 import numpy as np
 
+# mpg123 -w foo.wav foo.mp3
+
 def halfwave_rectification(array):
-    """
-    Function that computes the half wave rectification with a threshold of 0.
-    
-    Input :
-        array : 1D np.array, Temporal frame
-    Output :
-        halfwave : 1D np.array, Half wave temporal rectification
-        
-    """
+    # This func computes teh half wave rectification with a threshold of 0
+    #I: 1D np.array, O: 1D np.array
     halfwave = np.zeros(array.size)
     halfwave[np.argwhere(array > 0)] = 1
     return halfwave
 
-
 class Wiener:
-    """
-    Class made for wiener filtering based on the article "Improved Signal-to-Noise Ratio Estimation for Speech
-    Enhancement".
-
-    Reference :
-        Cyril Plapous, Claude Marro, Pascal Scalart. Improved Signal-to-Noise Ratio Estimation for Speech
-        Enhancement. IEEE Transactions on Audio, Speech and Language Processing, Institute of Electrical
-        and Electronics Engineers, 2006.
-        
-    """
-
+    #Ty "improved Signal-to-Noise Ratio Estimation for Speech Enhancement"
     def __init__(self, WAV_FILE, *T_NOISE):
         """
-        Input :
-            WAV_FILE
-            T_NOISE : float, Time in seconds /!\ Only works if stationnary noise is at the beginning of x /!\
-            
+        Input: WAV_FILE
+            T_NOISE: float, Time in seconds
         """
-        # Constants are defined here
         self.WAV_FILE, self.T_NOISE = WAV_FILE, T_NOISE
         self.FS, self.x = wav.read(self.WAV_FILE + '.wav')
         self.NFFT, self.SHIFT, self.T_NOISE = 2**10, 0.5, T_NOISE
-        self.FRAME = int(0.02*self.FS) # Frame of 20 ms
+        self.FRAME = int(0.02*self.FS) #Frame 20ms
 
-        # Computes the offset and number of frames for overlapp - add method.
+        # Computes the offset and number of frames for overlap
         self.OFFSET = int(self.SHIFT*self.FRAME)
 
-        # Hanning window and its energy Ew
+        #Hanning window and energy EW
         self.WINDOW = sg.hann(self.FRAME)
         self.EW = np.sum(self.WINDOW)
 
         self.channels = np.arange(self.x.shape[1]) if self.x.shape != (self.x.size,)  else np.arange(1)
+        if len(self.channels) == 1:
+            self.x = np.array([self.x]).T
         length = self.x.shape[0] if len(self.channels) > 1 else self.x.size
         self.frames = np.arange((length - self.FRAME) // self.OFFSET + 1)
         # Evaluating noise psd with n_noise
@@ -61,26 +43,22 @@ class Wiener:
     def a_posteriori_gain(SNR):
         """
         Function that computes the a posteriori gain G of Wiener filtering.
-        
             Input :
                 SNR : 1D np.array, Signal to Noise Ratio
             Output :
                 G : 1D np.array, gain G of Wiener filtering
-                
         """
         G = (SNR - 1)/SNR
         return G
-
+    
     @staticmethod
     def a_priori_gain(SNR):
         """
         Function that computes the a priori gain G of Wiener filtering.
-        
             Input :
                 SNR : 1D np.array, Signal to Noise Ratio
             Output :
                 G : 1D np.array, gain G of Wiener filtering
-                
         """
         G = SNR/(SNR + 1)
         return G
@@ -90,10 +68,8 @@ class Wiener:
         Estimation of the Power Spectral Density (Sbb) of the stationnary noise
         with Welch's periodogram given prior knowledge of n_noise points where
         speech is absent.
-        
             Output :
                 Sbb : 1D np.array, Power Spectral Density of stationnary noise
-                
         """
         # Initialising Sbb
         Sbb = np.zeros((self.NFFT, self.channels.size))
