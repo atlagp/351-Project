@@ -1,0 +1,6 @@
+
+
+* set up detection of quiet moments in the audio files via segmentation so we can initialize filter
+* explore noise reduction repo and determine how to get uniform vector lengths for fft
+* some audio files gives errors, figure out how to take filter of all audio files
+
