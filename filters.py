@@ -18,8 +18,7 @@ class IdFilter:
     def __rshift__(self, f): 
         return IdFilter(lambda srate, adata: f(*self(srate, adata)))
 
-
-class Weiner(IdFilter):
+class Wiener(IdFilter):
     def _filter(adata, srate):
         # write something that windows through the audio data and
         # finds the largest interval of "silence"

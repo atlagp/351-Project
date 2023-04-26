@@ -10,7 +10,7 @@ from filters import *
 
 class Model:
     def __init__(self, filt):
-        self.training_data = {}
+        self.model_data = {}
         self.filt = filt
 
     def _load_file(filename):
@@ -43,7 +43,7 @@ class Model:
         for k, v in dataset.items():
             audio_data = _load_file(v)
             vector = _vectorize(*audio_data)
-            process
+            _process_datapoint(bird_id, vector)
 
     # abstract, takes in audio file and returns bird id
     def match(soundfile):
@@ -58,6 +58,7 @@ class SVM(Model):
     pass
     
 class Hybrid(Mode):
+    pass
     
 
    

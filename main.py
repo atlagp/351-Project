@@ -45,11 +45,11 @@ def main():
     
     match values[0]:
         case "train":
-          pass
+            
         case "match":
           pass
         case other:
-            print("unknown command ", args[0]) 
+            print("unknown command ", values[0]) 
 
 main()
 # Run this line to load the data from file after you've read and processed the data once
