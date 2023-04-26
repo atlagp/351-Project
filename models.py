@@ -40,19 +40,18 @@ class Model:
         #resample 
 
         #clip to 1 channel
-        print(adata)
         fft = abs(scipy.fft.fft(adata, n = 7938000, overwrite_x = True))
         freqs = fftpk.fftfreq(len(fft), (1.0/srate))
         return (fft, freqs)
 
     def load_model(self):
         name = self.__class__.__name__
-        with open(path.join("./model_data", name + "-model.pkl", "r")) as fd:
+        with open(path.join("./model_data", name + "-model.pkl"), "r") as fd:
             self.model_data = pickle.load(fd)
 
     def save_model(self):
         name = self.__class__.__name__
-        with open(path.join("./model_data", name + "-model.pkl", "rw+")) as fd:
+        with open(path.join("./model_data", name + "-model.pkl"), "rw+") as fd:
             pickle.load(self.model_data, fd)
 
     # mutate the model from here for each datapoint
@@ -93,7 +92,6 @@ class Test(Model):
 
     def _process_datapoint(self, bird_id, vector):
         fft, freqs = vector
-        print(max(fft))
         #print(freqs)
         
     def match(self, soundfile):

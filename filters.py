@@ -7,7 +7,7 @@ class IdFilter:
         if len(args ) > 1:
           self._filter = args[0]
 
-    #default identity transformation
+    #default transformation is identity 
     def _filter(self, srate, adata):
         return (srate, adata)
 

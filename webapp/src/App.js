@@ -11,7 +11,10 @@ import './App.css';
 function App() {
 	const audioContext =  new (window.AudioContext || window.webkitAudioContext)();
 
-	const [status, setState] = useState("init");
+	const [state, setState] = useState({
+		status : "init",
+		bird_id : ""
+	});
 
 
 
@@ -68,8 +71,11 @@ function App() {
 		},
 		//result panel
 		result : (bird_id) => {
-			
+			<div>
+				<h1> {bird_id} </h1>
+			</div>
 		},
+
 		init : () => {
 			return (
 				<div>
@@ -82,13 +88,9 @@ function App() {
 	return (
 		<div className="App">
 			
-			<img src={logo} className="App-logo" alt="logo" />
-			<Grid
-			{elts[status]()}
-			<p>
-				Edit <code>src/App.js</code> {status}and save to reload.
-			</p>
-			
+			{state.bird_id && <p> {state.bird.id} </p>}
+			{elts[state.status]()}
+		
 		</div>
 	);
 }
