@@ -46,7 +46,7 @@ def main():
         case "train":
           files = get_dataset(
               "./annarborsamples",
-              (~has_song) & has_call & is_bitrate(44100)
+              (~has_song) & has_call & species_id("amecro")
           )
           train(model, files)
         case "match":

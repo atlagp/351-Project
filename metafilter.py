@@ -47,6 +47,7 @@ class MetaFilter:
     def __invert__(self):
         return MetaFilter(lambda x: not self.__fun(x))
 
+   
 @MetaFilter
 def has_call(meta):
     return ("call" in meta["tags"]["comment"][4].lower())
@@ -59,7 +60,12 @@ def has_song(meta):
 def only_call(meta):
     return "call" in meta["tags"]["comment"][4].lower().replace(",","").strip()
 
-def is_bitrate(br):
+def bitrate(br):
     return MetaFilter(lambda meta: (meta["streaminfo"]["sample_rate"] == br))
 
+def species_id(species_id):
+    return MetaFilter(lambda meta: path.basename(path.dirname(meta["filepath"])).lower() == species_id)
 
+def file_id(file_id):
+    return MetaFilter(lambda meta: path.basename(meta["filepath"]).lower() == (file_id.lower() + ".wav"))
+    

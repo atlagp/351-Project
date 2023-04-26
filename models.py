@@ -25,7 +25,7 @@ class Model:
 
         #downsample to 44.1 kHz
         if srate > 44100:
-            newlen = round(len(data) * float(new_rate) / sampling_rate) 
+            newlen = round(len(adata) * float(44100) / srate) 
             adata = sps.resample(adata, newlen)
             srate = 44100
 
@@ -93,7 +93,7 @@ class Test(Model):
 
     def _process_datapoint(self, bird_id, vector):
         fft, freqs = vector
-        print(len(fft))
+        print(max(fft))
         #print(freqs)
         
     def match(self, soundfile):
