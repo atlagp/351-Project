@@ -13,33 +13,33 @@ class Model:
         self.model_data = {}
         self.filt = filt
 
-    def _load_file(filename):
-        return filt(*wavfile.read(filename.path))
+    def _load_file(self, filename):
+        return self.filt(*wavfile.read(filename))
 
-    def _vectorize(srate, adata):
+    def _vectorize(self, srate, adata):
         fft = abs(scipy.fft.fft(adata, n = 500))
         freqs = fftpk.fftfreq(len(FFT), (1.0/srate))
         return (fft, freqs)
 
-    def load_model():
+    def load_model(self):
         name = self.__class__.__name__
         with open(path.join("./model_data", name + "-model.pkl", "r")) as fd:
             self.model_data = pickle.load(fd)
 
-    def save_model():
+    def save_model(self):
         name = self.__class__.__name__
         with open(path.join("./model_data", name + "-model.pkl", "rw+")) as fd:
             pickle.load(self.model_data, fd)
 
     # mutate the model from here for each datapoint
     # consider this method abstract
-    def _process_datapoint(bird_id, vector):
+    def _process_datapoint(self, bird_id, vector):
         pass
 
     # dataset : Dictionary[bird_id] = file_path
     # this method probably doesn't need to change
     # between models
-    def train(dataset):
+    def train(self, dataset):
         for k, v in dataset.items():
             audio_data = _load_file(v)
             vector = _vectorize(*audio_data)
@@ -60,6 +60,14 @@ class SVM(Model):
 class Hybrid(Model):
     pass
     
+
+class Test(Model):
+
+    def train(self, dataset):
+        pass
+    def match(self, soundfile):
+        self._load_file(soundfile)
+        return "amecro"
 
    
     

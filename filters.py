@@ -8,10 +8,10 @@ class IdFilter:
           self._filter = args[0]
 
     #default identity transformation
-    def _filter(ad, srate):
+    def _filter(self, srate, adata):
         return (srate, adata)
 
-    def __call__(adata, srate):
+    def __call__(self, srate, adata):
         return self._filter( srate, adata)
 
     #make filters composable 

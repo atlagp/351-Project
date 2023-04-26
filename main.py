@@ -26,28 +26,30 @@ def main():
     arguments, values = getopt.getopt(args, options, long_options)
 
     filt = Wiener() >> IdFilter()
-    files = get_dataset(
-        "./annarborsamples",
-        (~has_song) & has_call & is_bitrate(44100)
-    )
 
     model = {}
     match arguments[0]:
         case ("-m", "kmeans"):
-            model = Model(filt)
+            model = KMeans(filt)
         case ("-m", "svm"):
-            print("foo")
+            model = SVM(filt)
         case ("-m", "hybrid"):
-            print("foo")
+            model = Hybrid(filt)
+        case ("-m", "test"):
+            model = Test(filt)
         case other:
-            print("invalid model, options: kmeans, svm, hybrid")
+            print("invalid model, options: test, kmeans, svm, hybrid")
             sys.exit(1)
     
     match values[0]:
         case "train":
-          pass
+          files = get_dataset(
+              "./annarborsamples",
+              (~has_song) & has_call & is_bitrate(44100)
+          )
+          train(model, files)
         case "match":
-          pass
+          match(model, values[1])
         case other:
             print("unknown command ", values[0]) 
 
