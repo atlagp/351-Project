@@ -66,7 +66,6 @@ def main():
             "./annarborsamples",
             (~has_song) & has_call
         )
-        train(model, files)
         print_matrix(model.confusion_matrix(files))
     elif arg == "match":
         match(model, values[1])
