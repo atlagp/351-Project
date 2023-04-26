@@ -46,13 +46,13 @@ class Model:
 
     def load_model(self):
         name = self.__class__.__name__
-        with open(path.join("./model_data", name + "-model.pkl"), "r") as fd:
+        with open(path.join("./model_data", name + "-model.pkl"), "rb") as fd:
             self.model_data = pickle.load(fd)
 
     def save_model(self):
         name = self.__class__.__name__
-        with open(path.join("./model_data", name + "-model.pkl"), "rw+") as fd:
-            pickle.load(self.model_data, fd)
+        with open(path.join("./model_data", name + "-model.pkl"), "wb+") as fd:
+            pickle.dump(self.model_data, fd)
 
     # mutate the model from here for each datapoint
     # consider this method abstract
@@ -88,6 +88,9 @@ class Hybrid(Model):
 class Test(Model):
 
     def load_model(self):
+        pass
+
+    def train(self, dataset):
         pass
 
     def _process_datapoint(self, bird_id, vector):
