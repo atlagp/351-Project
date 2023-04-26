@@ -14,13 +14,13 @@ def halfwave_rectification(array):
 
 class Wiener:
     #Ty "improved Signal-to-Noise Ratio Estimation for Speech Enhancement"
-    def __init__(self, WAV_FILE, *T_NOISE):
+    def __init__(self, SR, WAV_DATA, *T_NOISE):
         """
         Input: WAV_FILE
             T_NOISE: float, Time in seconds
         """
         self.WAV_FILE, self.T_NOISE = WAV_FILE, T_NOISE
-        self.FS, self.x = wav.read(self.WAV_FILE + '.wav')
+        self.FS, self.x = (SR, WAV_DATA) 
         self.NFFT, self.SHIFT, self.T_NOISE = 2**10, 0.5, T_NOISE
         self.FRAME = int(0.02*self.FS) #Frame 20ms
 
@@ -128,7 +128,7 @@ class Wiener:
                 # Estimated signals at each frame normalized by the shift value
                 temp_s_est = np.real(ifft(S)) * self.SHIFT
                 s_est[i_min:i_max, channel] += temp_s_est[:self.FRAME]  # Truncating zero padding
-        wav.write(self.WAV_FILE+'_wiener.wav', self.FS,s_est/s_est.max() )
+        return (self.FS, s_est/s_est.max())
 
     def wiener_two_step(self):
         """
