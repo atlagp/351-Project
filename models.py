@@ -57,7 +57,7 @@ class KMeans(Model):
 class SVM(Model):
     pass
     
-class Hybrid(Mode):
+class Hybrid(Model):
     pass
     
 

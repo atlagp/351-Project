@@ -25,7 +25,7 @@ def main():
 
     arguments, values = getopt.getopt(args, options, long_options)
 
-    filt = Weiner() >> IdFilter()
+    filt = Wiener() >> IdFilter()
     files = get_dataset(
         "./annarborsamples",
         (~has_song) & has_call & is_bitrate(44100)
@@ -45,7 +45,7 @@ def main():
     
     match values[0]:
         case "train":
-            
+          pass
         case "match":
           pass
         case other:
