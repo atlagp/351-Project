@@ -29,30 +29,30 @@ def main():
     filt = Wiener() >> IdFilter()
 
     model = {}
-    match arguments[0]:
-        case ("-m", "kmeans"):
-            model = KMeans(filt)
-        case ("-m", "svm"):
-            model = SVM(filt)
-        case ("-m", "hybrid"):
-            model = Hybrid(filt)
-        case ("-m", "test"):
-            model = Test(filt)
-        case other:
-            print("invalid model, options: test, kmeans, svm, hybrid")
-            sys.exit(1)
-    
-    match values[0]:
-        case "train":
-          files = get_dataset(
-              "./annarborsamples",
-              (~has_song) & has_call & species_id("amecro")
-          )
-          train(model, files)
-        case "match":
-          match(model, values[1])
-        case other:
-            print("unknown command ", values[0]) 
+    arg = arguments[0]
+    if arg == ("-m", "kmeans"): 
+        model = KMeans(filt)
+    elif arg == ("-m", "svm"):
+      model = SVM(filt)
+    elif arg ==  ("-m", "hybrid"):
+      model = Hybrid(filt)
+    elif arg == ("-m", "test"):
+        model = Test(filt)
+    else:
+        print("invalid model, options: test, kmeans, svm, hybrid")
+        sys.exit(1)
+        
+    arg = values[0]
+    if arg == "train":
+        files = get_dataset(
+            "./annarborsamples",
+            (~has_song) & has_call & species_id("amecro")
+        )
+        train(model, files)
+    elif arg == "match":
+        match(model, values[1])
+    else:
+        print("unknown command ", values[0]) 
 
 main()
 # Run this line to load the data from file after you've read and processed the data once
