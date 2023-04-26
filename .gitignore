@@ -4,3 +4,8 @@ venv/
 venv3/
 .venv/
 *.png
+*.wav
+/server/node_modules/
+/webapp/README.md
+/noise-reduction/
+/__pycache__/
