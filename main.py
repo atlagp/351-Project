@@ -19,7 +19,10 @@ def print_matrix(matrix):
     for given in bird_ids: 
         data = []
         for guessed in bird_ids: 
-            data.append(matrix[given][guessed])
+            if guessed in matrix[given]:
+                data.append(matrix[given][guessed])
+            else:
+                data.append(0)
         print_row(given, *data)
 
 def match(model, fl):
