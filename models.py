@@ -19,9 +19,9 @@ class Model:
 
     def _vectorize(self, srate, adata):
         # pad_ms = 180000 # fixed length of audio file (ms)
-        # assert pad_ms > len(self.filt) Basically checking to see if file is already long enough but we're making them all longer right?
-        # silence = AudioSegment.silent(duration=pad_ms-len(self.filt)+1)
-        # self.filt = self.filt + silence
+        # assert pad_ms > len(self.adata) Basically checking to see if file is already long enough but we're making them all longer right?
+        # silence = AudioSegment.silent(duration=pad_ms-len(self.adata)+1)
+        # self.adata = self.adata + silence
         fft = abs(scipy.fft.fft(adata, n = 500))
         freqs = fftpk.fftfreq(len(FFT), (1.0/srate))
         return (fft, freqs)
