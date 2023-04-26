@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import Recorder from './rec.js';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import './App.css';
 
 	var recorder; 
+
 function App() {
 	const audioContext =  new (window.AudioContext || window.webkitAudioContext)();
 
@@ -80,6 +83,7 @@ function App() {
 		<div className="App">
 			
 			<img src={logo} className="App-logo" alt="logo" />
+			<Grid
 			{elts[status]()}
 			<p>
 				Edit <code>src/App.js</code> {status}and save to reload.

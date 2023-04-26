@@ -11,6 +11,7 @@ from models import *
 from metafilter import *
 
 def match(model, fl):
+    model.load_model()
     print(model.match(fl))
 
 def train(model, files):

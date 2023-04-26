@@ -25,10 +25,11 @@ requestID.then( (reqid) => {
 					["../main.py", "-m", "test", "match", filename]
 				);
 				python.stdout.on("data", (data) => {
-					console.log(data);
+					console.log(data.toString());
 					res.json({
-						"bird_id" : data
+						"bird_id" : data.toString()
 					})
+					fs.unlinkSync(filename);
 				});
 			}
 		});
