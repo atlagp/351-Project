@@ -75,7 +75,6 @@ function App() {
 				<h1> {bird_id} </h1>
 			</div>
 		},
-
 		init : () => {
 			return (
 				<div>

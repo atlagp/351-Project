@@ -10,6 +10,18 @@ from filters import *
 from models import *
 from metafilter import *
 
+def print_row(*args):
+    print (("{:<10} "*len(args)).strip().format(*args))
+
+def print_matrix(matrix):
+    bird_ids = sorted(matrix.keys())
+    print_row("      ", *bird_ids)
+    for given in bird_ids: 
+        data = []
+        for guessed in bird_ids: 
+            data.append(matrix[given][guessed])
+        print_row(given, *data)
+
 def match(model, fl):
     model.load_model()
     print(model.match(fl))
@@ -46,9 +58,16 @@ def main():
     if arg == "train":
         files = get_dataset(
             "./annarborsamples",
-            (~has_song) & has_call & species_id("amecro")
+            (~has_song) & has_call 
         )
         train(model, files)
+    elif arg == "confusion":
+        files = get_dataset(
+            "./annarborsamples",
+            (~has_song) & has_call
+        )
+        train(model, files)
+        print_matrix(model.confusion_matrix(files))
     elif arg == "match":
         match(model, values[1])
     else:

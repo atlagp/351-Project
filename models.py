@@ -1,5 +1,5 @@
 import noisereduction as nr
-import numpy and np
+import numpy as np
 import math
 import csv
 import pickle
@@ -43,8 +43,7 @@ class Model:
 
         #clip to 1 channel
         fft = abs(scipy.fft.fft(adata, n = 7938000, overwrite_x = True))
-        freqs = fftpk.fftfreq(len(fft), (1.0/srate))
-        return (fft, freqs)
+        return fft
 
     def load_model(self):
         name = self.__class__.__name__
@@ -56,10 +55,25 @@ class Model:
         with open(path.join("./model_data", name + "-model.pkl"), "wb+") as fd:
             pickle.dump(self.model_data, fd)
 
+
     # mutate the model from here for each datapoint
     # consider this method abstract
     def _process_datapoint(self, bird_id, vector):
         pass
+
+        
+    def confusion_matrix(self, dataset):
+        matrix = {}
+        for bird_id, fls in dataset.items():
+            for fl in fls:
+                pred = self.match(fl)
+                if bird_id not in matrix:
+                    matrix[bird_id] = {}
+                if pred not in matrix[bird_id]:
+                    matrix[bird_id][pred] = 0
+
+                matrix[bird_id][pred] += 1
+        return matrix
 
     # dataset : Dictionary[bird_id] = [file_path]
     # this method probably doesn't need to change
@@ -79,17 +93,19 @@ class Model:
 #define here
 class KMeans(Model):
     def _process_datapoint(self, bird_id, vector):
-        self.model_data[bird_id] = np.add(self.model_data[bird_id], vector) 
+        self.model_data.setdefault(bird_id, np.zeros(len(vector)))
+        self.model_data[bird_id] = np.add(self.model_data[bird_id], vector)
 
     def train(self, dataset):
         for bird_id, fls in dataset.items():
-            audio_file_count = 0
             for fl in fls:
-                audio_file_count += 1
                 audio_data = self._load_file(fl)
                 vector = self._vectorize(*audio_data)
                 self._process_datapoint(bird_id, vector)
-                self.model_data[bird_id] = self.model_data[bird_id]/audio_file_count
+
+            print(self.model_data[bird_id])
+            self.model_data[bird_id] /= len(fls)
+            print(self.model_data[bird_id])
 
     def match(self, soundfile):
         audio_data = self._load_file(soundfile)

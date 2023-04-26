@@ -31,7 +31,7 @@ def get_dataset(root_dir, md_filter):
         ))
         bird_id = path.basename(basep)
         filtered[bird_id] = fpaths
-    print("] training on %i files" % num_items(filtered))
+    print("] found %i files" % num_items(filtered))
     return filtered
 
 #filter out everything that isn't a 44.1Khz bird call recording
@@ -46,7 +46,6 @@ class MetaFilter:
         return MetaFilter(lambda x: self.__fun(x) or f2.__fun(x))
     def __invert__(self):
         return MetaFilter(lambda x: not self.__fun(x))
-
    
 @MetaFilter
 def has_call(meta):
