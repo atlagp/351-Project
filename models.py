@@ -1,4 +1,6 @@
 import noisereduction as nr
+import numpy and np
+import math
 import csv
 import pickle
 import os
@@ -76,11 +78,34 @@ class Model:
 
 #define here
 class KMeans(Model):
-    pass
+    def _process_datapoint(self, bird_id, vector):
+        self.model_data[bird_id] = np.add(self.model_data[bird_id], vector) 
+
+    def train(self, dataset):
+        for bird_id, fls in dataset.items():
+            audio_file_count = 0
+            for fl in fls:
+                audio_file_count += 1
+                audio_data = self._load_file(fl)
+                vector = self._vectorize(*audio_data)
+                self._process_datapoint(bird_id, vector)
+                self.model_data[bird_id] = self.model_data[bird_id]/audio_file_count
+
+    def match(self, soundfile):
+        audio_data = self._load_file(soundfile)
+        vector = self._vectorize(*audio_data)
+        prediction = "amecro"
+        distance = math.inf
+        for bird_id, cluster in self.model_data.items():
+            dist = np.absolute(np.linalg.norm(vector - cluster))
+            if dist < distance:
+                prediction = bird_id
+                distance = dist
+        return prediction
 
 class SVM(Model):
     pass
-    
+
 class Hybrid(Model):
     pass
     
