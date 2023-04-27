@@ -41,15 +41,13 @@ def main():
 
     arguments, values = getopt.getopt(args, options, long_options)
 
-    # filt = Wiener() >> IdFilter()
-    filt = IdFilter()
+    filt = Wiener() >> IdFilter()
 
     model = {}
     arg = arguments[0]
     if arg == ("-m", "kmeans"): 
         model = KMeans(filt)
     elif arg == ("-m", "svm"):
-      print("model svm\n")
       model = SVM(filt)
     elif arg ==  ("-m", "hybrid"):
       model = Hybrid(filt)
@@ -65,7 +63,6 @@ def main():
             "./annarborsamples",
             (~has_song) & has_call 
         )
-        print("arg read\n")
         train(model, files)
     elif arg == "confusion":
         files = get_dataset(

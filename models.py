@@ -109,9 +109,7 @@ class KMeans(Model):
                 vector = self._vectorize(*audio_data)
                 self._process_datapoint(bird_id, vector)
 
-            print(self.model_data[bird_id])
             self.model_data[bird_id] /= len(fls)
-            print(self.model_data[bird_id])
 
     def match(self, soundfile):
         audio_data = self._load_file(soundfile)
@@ -150,8 +148,6 @@ class SVM(Model):
     ):
         best_performance_list = []
         for C_value in C_range:
-            print(C_value)
-            print(" tested\n")
             # declare linear svc
             if loss == "hinge":
                 clf = LinearSVC(loss = "hinge", C = C_value)
@@ -161,7 +157,7 @@ class SVM(Model):
                 else:
                     clf = LinearSVC(C = C_value)
             # perform cv calculations
-            cv_perf_list = self.cv_performance(clf, X, y, k, metric = metric)
+            cv_perf_list = self.cv_performance(clf, X, y, k)
             # add the highest to the list
             best_performance_list.append(cv_perf_list)
         best_performance_list = np.array(best_performance_list)
@@ -172,7 +168,6 @@ class SVM(Model):
         return best_C_performance
 
     def train(self, dataset):
-        print("started to train\n")
         samples = []
         features = []
         for bird_id, fls in dataset.items():
@@ -181,7 +176,6 @@ class SVM(Model):
                 vector = self._vectorize(*audio_data)
                 samples.append(vector)
                 features.append(bird_id)
-        print("samples and features complete\n")
         C_range = []
         C_range.append(10**-3)
         C_range.append(10**-2)
