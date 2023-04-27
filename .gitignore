@@ -10,6 +10,7 @@ venv3/
 /noise-reduction/
 /__pycache__/
 ./annarborsamples
+/annarborsamples
 /model_data/KMeans-model.pkl
 /model_data/Test-model.pkl
 /notes.org
